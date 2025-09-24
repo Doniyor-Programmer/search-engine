@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>Doniyor</h1>
+      <p>A private metasearch engine with zero tracking and no ads.</p>
+    </header>
+
+    <main>
+      <form action="/" method="get" class="search-form">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search privately..."
+          value="{{ query }}"
+          autocomplete="off"
+          aria-label="Search query"
+          required
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      {% if error %}
+      <div class="alert">{{ error }}</div>
+      {% endif %}
+
+      {% if results %}
+      <section class="results" aria-live="polite">
+        <h2>Results</h2>
+        <ul>
+          {% for result in results %}
+          <li>
+            <a href="{{ result.url }}" rel="noopener" target="_blank">{{ result.title }}</a>
+            <p class="url">{{ result.url }}</p>
+            <p class="snippet">{{ result.snippet }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% elif query %}
+      <p class="empty-state">No results yet. Try refining your search terms.</p>
+      {% endif %}
+    </main>
+
+    <footer>
+      <p>
+        Doniyor does not track you. Your query is proxied through our service and sent to
+        DuckDuckGo without storing identifying logs.
+      </p>
+    </footer>
+  </body>
+</html>
